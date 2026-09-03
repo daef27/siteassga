@@ -164,6 +164,17 @@
         .modal-header h3 { font-size: 16px; color: #ffd700; display: flex; align-items: center; gap: 8px; }
         .modal-close { background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; }
         .modal-body { padding: 22px; }
+        .admin-auth { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: radial-gradient(circle at top right, #dbe9f8, #eef3f8 48%); }
+        .admin-auth-box { width: min(420px, 100%); padding: 36px; background: #fff; border-radius: 18px; box-shadow: 0 18px 50px rgba(0,51,102,.14); text-align: center; }
+        .admin-auth-box img { width: 76px; height: 76px; object-fit: cover; border-radius: 12px; margin-bottom: 14px; }
+        .admin-auth-box h1 { color: #003366; font-size: 1.6rem; margin-bottom: 8px; }
+        .admin-auth-box p { color: #667085; margin-bottom: 22px; }
+        .admin-auth-box input { width: 100%; padding: 13px 15px; border: 1px solid #d9e1eb; border-radius: 9px; font-size: 1rem; margin-bottom: 14px; }
+        .admin-auth-box button { width: 100%; padding: 13px; border: 0; border-radius: 9px; background: #003366; color: #fff; font-weight: 700; cursor: pointer; }
+        .admin-auth-box button:hover { background: #004aad; }
+        .admin-auth-error { display: none; color: #b42318; font-weight: 600; font-size: .9rem; margin-top: 12px; }
+        body.admin-locked > header, body.admin-locked > .admin-layout, body.admin-locked > footer { display: none; }
+        body.admin-unlocked > .admin-auth { display: none; }
 
         @media (max-width: 900px) {
             .admin-layout { flex-direction: column; }
@@ -172,7 +183,18 @@
         }
     </style>
 </head>
-<body>
+<body class="admin-locked">
+    <section class="admin-auth" id="adminAuth" aria-labelledby="adminAuthTitle">
+        <form class="admin-auth-box" id="adminAuthForm">
+            <img src="src/imagens/Assga_foto.jpg" alt="ASSGA">
+            <h1 id="adminAuthTitle">Acesso Administrativo</h1>
+            <p>Informe a senha da diretoria para acessar o painel.</p>
+            <input type="password" id="adminPassword" placeholder="Senha administrativa" autocomplete="current-password" required>
+            <button type="submit"><i class="fas fa-lock-open"></i> Entrar no painel</button>
+            <div class="admin-auth-error" id="adminAuthError" role="alert">Senha administrativa inválida.</div>
+            <a href="index.html" style="display:inline-block;margin-top:16px;color:#004aad;text-decoration:none;">Voltar ao site</a>
+        </form>
+    </section>
 
     <!-- HEADER -->
     <header>
@@ -187,6 +209,7 @@
             <a href="index.html" target="_blank"><i class="fas fa-eye"></i> Ver Site</a>
             <a href="login.html" target="_blank"><i class="fas fa-id-badge"></i> Área do Sócio</a>
             <button type="button" onclick="exportarBackup()"><i class="fas fa-download"></i> Backup</button>
+            <button type="button" onclick="sairAdmin()"><i class="fas fa-right-from-bracket"></i> Sair</button>
         </div>
     </header>
 
@@ -1914,7 +1937,32 @@
                 .replace(/'/g, '&#039;');
         }
 
-        document.addEventListener('DOMContentLoaded', carregarTodosOsCadastros);
+        function autenticarAdmin(e) {
+            e.preventDefault();
+            const senhaDigitada = document.getElementById('adminPassword').value;
+            const config = JSON.parse(localStorage.getItem('assga_config') || '{}');
+            const senhaAdmin = config.senhaAdmin || 'ASSGA2026';
+            if (senhaDigitada === senhaAdmin) {
+                sessionStorage.setItem('assga_admin_autenticado', 'true');
+                document.body.className = 'admin-unlocked';
+                carregarTodosOsCadastros();
+                return;
+            }
+            document.getElementById('adminAuthError').style.display = 'block';
+        }
+
+        function sairAdmin() {
+            sessionStorage.removeItem('assga_admin_autenticado');
+            window.location.reload();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('adminAuthForm').addEventListener('submit', autenticarAdmin);
+            if (sessionStorage.getItem('assga_admin_autenticado') === 'true') {
+                document.body.className = 'admin-unlocked';
+                carregarTodosOsCadastros();
+            }
+        });
     </script>
 </body>
 </html>

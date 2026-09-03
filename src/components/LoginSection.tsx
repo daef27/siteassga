@@ -9,9 +9,12 @@ interface LoginSectionProps {
 
 export default function LoginSection({ onNavigate, onLoginSuccess }: LoginSectionProps) {
   const [isRegister, setIsRegister] = useState(false);
-  const [matriculaOrEmail, setMatriculaOrEmail] = useState('deafdonascimento@gmail.com');
-  const [senha, setSenha] = useState('••••••••');
+  const [matriculaOrEmail, setMatriculaOrEmail] = useState('');
+  const [senha, setSenha] = useState('');
   const [registerSuccess, setRegisterSuccess] = useState(false);
+  const [loginError, setLoginError] = useState('');
+
+  const normalizeCpf = (value: string) => value.replace(/\D/g, '');
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -22,7 +25,24 @@ export default function LoginSection({ onNavigate, onLoginSuccess }: LoginSectio
         setRegisterSuccess(false);
       }, 2500);
     } else {
-      onLoginSuccess(matriculaOrEmail);
+      const identifier = matriculaOrEmail.trim();
+      const normalizedIdentifier = normalizeCpf(identifier);
+      const socios = JSON.parse(localStorage.getItem('assga_socios') || '[]');
+      const socio = socios.find((member: { cpf?: string; matricula?: string; email?: string; senha?: string }) => {
+        const matchesIdentifier =
+          (normalizedIdentifier.length > 0 && normalizeCpf(member.cpf || '') === normalizedIdentifier) ||
+          (member.matricula || '').trim().toLowerCase() === identifier.toLowerCase() ||
+          (member.email || '').trim().toLowerCase() === identifier.toLowerCase();
+        return matchesIdentifier && member.senha === senha.trim();
+      });
+
+      if (socio) {
+        setLoginError('');
+        sessionStorage.setItem('socioLogado', JSON.stringify(socio));
+        onLoginSuccess(socio.matricula || identifier);
+      } else {
+        setLoginError('CPF, matrícula, e-mail ou senha inválidos.');
+      }
     }
   };
 
@@ -89,7 +109,7 @@ export default function LoginSection({ onNavigate, onLoginSuccess }: LoginSectio
 
           <div>
             <label className="font-semibold text-slate-700 block mb-1">
-              {isRegister ? 'E-mail ou WhatsApp' : 'Matrícula ou E-mail'}
+              {isRegister ? 'E-mail ou WhatsApp' : 'CPF, matrícula ou e-mail'}
             </label>
             <div className="relative">
               <User className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
@@ -98,11 +118,17 @@ export default function LoginSection({ onNavigate, onLoginSuccess }: LoginSectio
                 required
                 value={matriculaOrEmail}
                 onChange={(e) => setMatriculaOrEmail(e.target.value)}
-                placeholder="Ex: ASG-2024-001 ou seu@email.com"
+                placeholder="Ex: 000.000.000-00 ou ASG-2024-001"
                 className="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:bg-white"
               />
             </div>
           </div>
+
+          {!isRegister && loginError && (
+            <p role="alert" className="text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+              {loginError}
+            </p>
+          )}
 
           <div>
             <label className="font-semibold text-slate-700 block mb-1">Senha de Acesso</label>

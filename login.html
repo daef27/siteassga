@@ -41,7 +41,7 @@
             const cpf = document.getElementById('cpf').value.trim().replace(/\D/g, '');
             const senha = document.getElementById('senha').value.trim();
             const socios = JSON.parse(localStorage.getItem('assga_socios') || '[]');
-            const socio = socios.find(s => s.cpf === cpf && s.senha === senha);
+            const socio = socios.find(s => (s.cpf || '').replace(/\D/g, '') === cpf && s.senha === senha);
             if (socio) {
                 sessionStorage.setItem('socioLogado', JSON.stringify(socio));
                 window.location.href = 'carteirinha-impressa.html';

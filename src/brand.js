@@ -19,7 +19,7 @@
             : logo;
 
         document.querySelectorAll('img').forEach(function (image) {
-            if (image.dataset.brandLogo === 'true' || image.id === 'logoImgHeader' || image.closest('.logo-area, .header-logo, .login-box, .admin-auth-box')) {
+            if (image.dataset.brandLogo === 'true' || image.id === 'logoImgHeader' || image.closest('.logo-area, .header-logo, .login-box, .admin-auth-box, .carteira-header .logo')) {
                 image.src = logo;
             }
         });

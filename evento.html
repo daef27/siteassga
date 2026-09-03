@@ -515,7 +515,7 @@
                             </span>
                         </div>
                         ${e.status === 'aberto' ? `
-                            <a href="pagamento.html" class="btn-inscrever">
+                            <a href="${escapeHtml(e.linkInscricao || 'pagamento.html')}" class="btn-inscrever">
                                 <i class="fas fa-ticket"></i> Inscreva-se
                             </a>
                         ` : ''}

@@ -649,6 +649,10 @@
                                 <label>Imagem do Evento</label>
                                 <input type="text" id="eventoImagem" class="form-control" placeholder="src/imagens/halloween-assga.jpeg">
                             </div>
+                            <div class="form-group">
+                                <label>Link do botão de inscrição</label>
+                                <input type="text" id="eventoLink" class="form-control" placeholder="https://exemplo.com/inscricao ou pagamento.html">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Descrição e Programação</label>
@@ -1566,14 +1570,15 @@
             const preco = document.getElementById('eventoPreco').value.trim();
             const status = document.getElementById('eventoStatus').value;
             let imagem = document.getElementById('eventoImagem').value.trim() || 'src/imagens/halloween-assga.jpeg';
+            const linkInscricao = document.getElementById('eventoLink').value.trim() || 'pagamento.html';
             const descricao = document.getElementById('eventoDesc').value.trim();
 
             const eventos = JSON.parse(localStorage.getItem('assga_eventos') || '[]');
 
             if (editIdx >= 0 && editIdx < eventos.length) {
-                eventos[editIdx] = { ...eventos[editIdx], titulo, data, local, preco, status, imagem, descricao };
+                eventos[editIdx] = { ...eventos[editIdx], titulo, data, local, preco, status, imagem, linkInscricao, descricao };
             } else {
-                eventos.push({ titulo, data, local, preco, status, imagem, descricao });
+                eventos.push({ titulo, data, local, preco, status, imagem, linkInscricao, descricao });
             }
 
             localStorage.setItem('assga_eventos', JSON.stringify(eventos));
@@ -1594,6 +1599,7 @@
             document.getElementById('eventoPreco').value = ev.preco || '';
             document.getElementById('eventoStatus').value = ev.status || 'Aberto';
             document.getElementById('eventoImagem').value = ev.imagem || '';
+            document.getElementById('eventoLink').value = ev.linkInscricao || '';
             document.getElementById('eventoDesc').value = ev.descricao || '';
 
             document.getElementById('btnSalvarEvento').innerHTML = '<i class="fas fa-save"></i> Atualizar Evento';

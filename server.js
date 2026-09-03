@@ -1,4 +1,6 @@
 import express from 'express';
+import fs from 'fs';
+import https from 'https';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { GoogleGenAI } from '@google/genai';
@@ -10,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT || 3000);
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -307,7 +309,20 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Start server
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`ASSGA site server running on http://0.0.0.0:${PORT}`);
-});
+// Use HTTPS when certificate paths are provided; local development remains HTTP.
+const httpsKey = process.env.HTTPS_KEY;
+const httpsCert = process.env.HTTPS_CERT;
+if (httpsKey && httpsCert) {
+  const server = https.createServer({
+    key: fs.readFileSync(path.resolve(__dirname, httpsKey)),
+    cert: fs.readFileSync(path.resolve(__dirname, httpsCert)),
+  }, app);
+  server.listen(PORT, '0.0.0.0', () => {
+    console.log(`ASSGA site server running on https://0.0.0.0:${PORT}`);
+  });
+} else {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`ASSGA site server running on http://0.0.0.0:${PORT}`);
+    console.log('HTTPS desativado: configure HTTPS_KEY e HTTPS_CERT para ativá-lo.');
+  });
+}

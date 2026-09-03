@@ -477,7 +477,21 @@
         // CARREGAR EVENTOS COM IMAGEM
         function carregarEventos() {
             const container = document.getElementById('listaEventosPagina');
-            const eventos = JSON.parse(localStorage.getItem('assga_eventos') || '[]');
+            let eventos = JSON.parse(localStorage.getItem('assga_eventos') || '[]');
+
+            if (eventos.length === 0) {
+                eventos = [{
+                    titulo: '2º HALLOWEEN ASSGA',
+                    data: '15 e 16 de outubro de 2026',
+                    local: 'Ginásio Poliesportivo de São Gonçalo do Amarante - RN',
+                    preco: '50,00',
+                    status: 'Aberto',
+                    imagem: 'src/imagens/halloween-assga.jpeg',
+                    linkInscricao: 'pagamento.html',
+                    descricao: 'Evento especial esportivo e de integração com premiações e confraternização.'
+                }];
+                localStorage.setItem('assga_eventos', JSON.stringify(eventos));
+            }
 
             if (eventos.length === 0) {
                 container.innerHTML = `
@@ -496,7 +510,9 @@
                 fechado: { label: 'Encerrado', class: 'status-fechado' }
             };
 
-            container.innerHTML = eventos.map(e => `
+            container.innerHTML = eventos.map(e => {
+                const status = String(e.status || 'aberto').toLowerCase();
+                return `
                 <div class="evento-card">
                     ${e.imagem ? `
                         <div class="evento-imagem">
@@ -510,18 +526,19 @@
                             ${e.data ? `<span><i class="fas fa-calendar-check"></i> ${escapeHtml(e.data)}</span>` : ''}
                             ${e.local ? `<span><i class="fas fa-map-pin"></i> ${escapeHtml(e.local)}</span>` : ''}
                             ${e.preco ? `<span><i class="fas fa-tag"></i> R$ ${escapeHtml(e.preco)}</span>` : ''}
-                            <span class="status-badge ${statusMap[e.status]?.class || 'status-aberto'}">
-                                ${statusMap[e.status]?.label || 'Inscrições Abertas'}
+                            <span class="status-badge ${statusMap[status]?.class || 'status-aberto'}">
+                                ${statusMap[status]?.label || 'Inscrições Abertas'}
                             </span>
                         </div>
-                        ${e.status === 'aberto' ? `
+                        ${status === 'aberto' ? `
                             <a href="${escapeHtml(e.linkInscricao || 'pagamento.html')}" class="btn-inscrever">
                                 <i class="fas fa-ticket"></i> Inscreva-se
                             </a>
                         ` : ''}
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         }
 
         document.addEventListener('DOMContentLoaded', carregarEventos);

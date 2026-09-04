@@ -301,12 +301,15 @@ app.get('/index.php', (req, res) => {
   res.redirect(301, '/');
 });
 
-// Serve all static files from workspace root
-app.use(express.static(__dirname));
+// Serve the production build when requested; local development keeps legacy files available.
+const staticRoot = process.env.NODE_ENV === 'production'
+  ? path.join(__dirname, 'dist')
+  : __dirname;
+app.use(express.static(staticRoot));
 
 // Default route
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(staticRoot, 'index.html'));
 });
 
 // Use HTTPS when certificate paths are provided; local development remains HTTP.

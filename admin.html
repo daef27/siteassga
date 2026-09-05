@@ -936,7 +936,33 @@
 
         const SOCIOS_PADRAO = [];
 
+        function corrigirCaminhosDasImagens() {
+            const chaves = [
+                'assga_slider',
+                'assga_socios',
+                'assga_noticias',
+                'assga_eventos',
+                'assga_historias',
+                'assga_diretoria',
+                'assga_conteudos',
+                'assga_config'
+            ];
+
+            chaves.forEach((chave) => {
+                const salvo = localStorage.getItem(chave);
+                if (!salvo) return;
+
+                try {
+                    const corrigido = salvo.replaceAll('src/imagens/foto3.jpg', 'src/imagens/foto3 (1).jpg');
+                    if (corrigido !== salvo) localStorage.setItem(chave, corrigido);
+                } catch (error) {
+                    console.warn(`Nao foi possivel corrigir imagens de ${chave}.`, error);
+                }
+            });
+        }
+
         function carregarTodosOsCadastros() {
+            corrigirCaminhosDasImagens();
             carregarSlider();
             carregarSocios();
             carregarInscricoes();

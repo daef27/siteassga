@@ -1,6 +1,11 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "functions": {
+    "api/data.js": {
+      "maxDuration": 10
+    }
+  },
   "rewrites": [
     { "source": "/historia", "destination": "/historia.html" },
     { "source": "/esportiva", "destination": "/esportiva.html" },

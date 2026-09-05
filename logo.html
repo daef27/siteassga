@@ -6,7 +6,8 @@
     <title>Gerenciar logo e favicon | ASSGA</title>
     <link rel="icon" href="src/imagens/Assga_foto.jpg" type="image/jpeg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="src/brand.js"></script>
+    <script src="/brand.js"></script>
+    <script src="/api-sync.js"></script>
     <style>
         * { box-sizing: border-box; }
         body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Tahoma, sans-serif; color: #102a43; background: radial-gradient(circle at top right, #dbe9f8, #f5f8fb 52%); }
@@ -41,7 +42,22 @@
         function readImage(file, callback) { if (!file) return; if (file.size > 4 * 1024 * 1024) return alert('A imagem deve ter no máximo 4 MB.'); const reader = new FileReader(); reader.onload = () => callback(reader.result); reader.readAsDataURL(file); }
         logoFile.addEventListener('change', function () { readImage(this.files[0], data => { selectedLogo = data; logoPreview.src = data; }); });
         faviconFile.addEventListener('change', function () { readImage(this.files[0], data => { selectedFavicon = data; faviconPreview.src = data; }); });
-        brandForm.addEventListener('submit', function (event) { event.preventDefault(); localStorage.setItem('assga_config', JSON.stringify({ ...getConfig(), logoImg: selectedLogo, faviconImg: selectedFavicon || selectedLogo || fallback })); statusMessage.textContent = 'Marca salva com sucesso.'; });
+        brandForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const config = { ...getConfig(), logoImg: selectedLogo, faviconImg: selectedFavicon || selectedLogo || fallback };
+            localStorage.setItem('assga_config', JSON.stringify(config));
+            try {
+                const response = await fetch('/api/data?collection=config', {
+                    method: 'POST',
+                    headers: { 'content-type': 'application/json' },
+                    body: JSON.stringify(config),
+                });
+                if (!response.ok) throw new Error('Falha ao salvar no servidor');
+                statusMessage.textContent = 'Marca salva para todas as páginas.';
+            } catch (error) {
+                statusMessage.textContent = 'Marca salva somente neste navegador.';
+            }
+        });
     </script>
 </body>
 </html>

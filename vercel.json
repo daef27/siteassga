@@ -1,4 +1,13 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/historia", "destination": "/historia.html" },
+    { "source": "/esportiva", "destination": "/esportiva.html" },
+    { "source": "/estatuto", "destination": "/estatuto.html" },
+    { "source": "/evento", "destination": "/evento.html" },
+    { "source": "/diretoria", "destination": "/diretoria.html" },
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/admin", "destination": "/admin.html" }
+  ]
 }

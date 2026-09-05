@@ -518,9 +518,9 @@
                             <div class="form-group">
                                 <label>Status</label>
                                 <select id="inscStatus" class="form-control">
-                                    <option value="PAGO">PAGO</option>
                                     <option value="PENDENTE">PENDENTE</option>
                                 </select>
+                                <small style="display:block; margin-top:6px; color:#64748b;">A inscrição só fica ativa depois da confirmação do pagamento.</small>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary"><i class="fas fa-ticket"></i> Confirmar Inscrição</button>
@@ -1220,31 +1220,13 @@
                 inscricoes = JSON.parse(localStorage.getItem('assga_inscricoes') || 'null');
             } catch(e) {}
 
-            if (!inscricoes || !Array.isArray(inscricoes) || inscricoes.length === 0) {
-                inscricoes = [
-                    {
-                        vaga: 1,
-                        codigo: "HW-1024",
-                        nome: "Lucas Ferreira Lima",
-                        cpf: "234.567.890-12",
-                        telefone: "(84) 99123-4567",
-                        pagamento: "PIX",
-                        valor: "50",
-                        statusPagamento: "PAGO",
-                        data: "28/10/2026 14:30"
-                    },
-                    {
-                        vaga: 2,
-                        codigo: "HW-1025",
-                        nome: "Juliana Mendes",
-                        cpf: "345.678.901-23",
-                        telefone: "(84) 98765-4321",
-                        pagamento: "PIX",
-                        valor: "50",
-                        statusPagamento: "PAGO",
-                        data: "28/10/2026 15:10"
-                    }
-                ];
+            if (!Array.isArray(inscricoes)) {
+                inscricoes = [];
+            }
+
+            const inscricoesSemExemplos = inscricoes.filter(item => !['HW-1024', 'HW-1025'].includes(item.codigo));
+            if (inscricoesSemExemplos.length !== inscricoes.length) {
+                inscricoes = inscricoesSemExemplos;
                 localStorage.setItem('assga_inscricoes', JSON.stringify(inscricoes));
             }
 
@@ -1263,20 +1245,24 @@
                     <td><strong>#${item.vaga || (idx + 1)}</strong></td>
                     <td><code>${escapeHtml(item.codigo || '-')}</code></td>
                     <td><strong>${escapeHtml(item.nome || '-')}</strong></td>
-                    <td>${escapeHtml(item.cpf || '-')}</td>
-                    <td>${escapeHtml(item.telefone || item.whatsapp || '-')}</td>
+                    <td>${escapeHtml(mascararCPF(item.cpf))}</td>
+                    <td>${escapeHtml(mascararWhatsApp(item.telefone || item.whatsapp))}</td>
                     <td>${escapeHtml(item.pagamento || 'PIX')} (R$ ${escapeHtml(String(item.valor || '50'))})</td>
                     <td>
                         <span class="badge ${item.statusPagamento === 'PAGO' ? 'badge-success' : 'badge-warning'}">
                             ${item.statusPagamento || 'PENDENTE'}
                         </span>
+                        <span class="badge ${item.statusPagamento === 'PAGO' ? 'badge-success' : 'badge-warning'}" style="margin-left:4px;">
+                            ${item.statusPagamento === 'PAGO' ? 'ATIVA' : 'NÃO ATIVA'}
+                        </span>
                     </td>
                     <td>
                         <div style="display:flex; gap:6px;">
-                            <button type="button" class="btn btn-sm ${item.statusPagamento === 'PAGO' ? 'btn-secondary' : 'btn-success'}" 
-                                    onclick="toggleStatusInscricao(${idx})" title="Alternar Status">
-                                <i class="fas ${item.statusPagamento === 'PAGO' ? 'fa-xmark' : 'fa-check'}"></i>
-                            </button>
+                            ${item.statusPagamento !== 'PAGO' ? `
+                                <button type="button" class="btn btn-sm btn-success" onclick="toggleStatusInscricao(${idx})" title="Confirmar pagamento e ativar inscrição">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            ` : ''}
                             <button type="button" class="btn btn-primary btn-sm" onclick="verDetalhesInscricao(${idx})" title="Ver Detalhes">
                                 <i class="fas fa-eye"></i>
                             </button>
@@ -1302,7 +1288,7 @@
             const telefone = document.getElementById('inscWhats').value.trim();
             const pagamento = document.getElementById('inscPagamento').value;
             const valor = document.getElementById('inscValor').value;
-            const statusPagamento = document.getElementById('inscStatus').value;
+            const statusPagamento = 'PENDENTE';
             const vaga = inscricoes.length + 1;
             const codigo = "HW-" + Math.floor(1000 + Math.random() * 9000);
 
@@ -1321,7 +1307,7 @@
         function toggleStatusInscricao(idx) {
             const inscricoes = JSON.parse(localStorage.getItem('assga_inscricoes') || '[]');
             if (!inscricoes[idx]) return;
-            inscricoes[idx].statusPagamento = (inscricoes[idx].statusPagamento === 'PAGO' ? 'PENDENTE' : 'PAGO');
+            inscricoes[idx].statusPagamento = 'PAGO';
             localStorage.setItem('assga_inscricoes', JSON.stringify(inscricoes));
             carregarInscricoes();
         }
@@ -1361,13 +1347,16 @@
                 </div>
                 <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-bottom:16px; font-size:14px; line-height:1.8;">
                     <div><strong>Nome:</strong> ${escapeHtml(item.nome)}</div>
-                    <div><strong>CPF:</strong> ${escapeHtml(item.cpf)}</div>
-                    <div><strong>WhatsApp:</strong> ${escapeHtml(item.telefone || item.whatsapp)}</div>
+                    <div><strong>CPF:</strong> <span id="inscricaoCpfDetalhe">${escapeHtml(mascararCPF(item.cpf))}</span></div>
+                    <div><strong>WhatsApp:</strong> <span id="inscricaoWhatsAppDetalhe">${escapeHtml(mascararWhatsApp(item.telefone || item.whatsapp))}</span></div>
                     <div><strong>Forma de Pagamento:</strong> ${escapeHtml(item.pagamento)} (R$ ${item.valor})</div>
                     <div><strong>Status:</strong> <span class="badge ${item.statusPagamento === 'PAGO' ? 'badge-success' : 'badge-warning'}">${item.statusPagamento}</span></div>
                     <div><strong>Data do Registro:</strong> ${item.data || '-'}</div>
                 </div>
                 <div style="display:flex; gap:10px; justify-content:flex-end;">
+                    <button type="button" class="btn btn-primary" onclick="mostrarDadosInscricao(${idx})" id="btnMostrarDadosInscricao">
+                        <i class="fas fa-eye"></i> Mostrar dados completos
+                    </button>
                     <button type="button" class="btn btn-secondary" onclick="fecharModalInscricao()">Fechar</button>
                     <a href="https://wa.me/55${(item.telefone || '').replace(/\D/g, '')}?text=${encodeURIComponent('Olá ' + item.nome + ', confirmamos sua vaga #' + item.vaga + ' (' + item.codigo + ') no Halloween ASSGA!')}" 
                        target="_blank" class="btn btn-success">
@@ -1376,6 +1365,17 @@
                 </div>
             `;
             document.getElementById('modalInscricao').classList.add('active');
+        }
+
+        function mostrarDadosInscricao(idx) {
+            const inscricoes = JSON.parse(localStorage.getItem('assga_inscricoes') || '[]');
+            const item = inscricoes[idx];
+            if (!item) return;
+
+            document.getElementById('inscricaoCpfDetalhe').textContent = item.cpf || '-';
+            document.getElementById('inscricaoWhatsAppDetalhe').textContent = item.telefone || item.whatsapp || '-';
+            const botao = document.getElementById('btnMostrarDadosInscricao');
+            if (botao) botao.remove();
         }
 
         function fecharModalInscricao() {
@@ -1941,6 +1941,18 @@
             else if (v.length > 6) v = v.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
             else if (v.length > 3) v = v.replace(/(\d{3})(\d{1,3})/, '$1.$2');
             input.value = v;
+        }
+
+        function mascararCPF(valor) {
+            const cpf = String(valor || '').replace(/\D/g, '');
+            if (cpf.length !== 11) return valor || '-';
+            return `***.***.***-${cpf.slice(-2)}`;
+        }
+
+        function mascararWhatsApp(valor) {
+            const telefone = String(valor || '').replace(/\D/g, '');
+            if (telefone.length < 8) return valor || '-';
+            return `(${telefone.slice(0, 2)}) *****-${telefone.slice(-4)}`;
         }
 
         function escapeHtml(str) {

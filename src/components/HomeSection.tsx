@@ -36,7 +36,7 @@ const SLIDER_PHOTOS = [
     descricao: 'União, celebração e acolhimento de todos os associados e amigos da comunidade surda',
   },
   {
-    src: 'src/imagens/foto3.jpg',
+    src: 'src/imagens/foto3 (1).jpg',
     titulo: 'Treinos Semanais em Quadra',
     descricao: 'Preparação física, técnica e inclusão esportiva no ginásio poliesportivo',
   },

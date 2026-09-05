@@ -256,7 +256,7 @@ export const MOCK_EVENTOS: EventoASSGA[] = [
     gratuito: true,
     vagas: 160,
     inscritosCount: 140,
-    imagem: 'src/imagens/foto3.jpg',
+    imagem: 'src/imagens/foto3 (1).jpg',
   },
 ];
 
@@ -304,7 +304,7 @@ As inscrições são limitadas a 100 participantes. Pagamento rápido e seguro v
     data: '01 de setembro de 2026',
     categoria: 'Treinos',
     autor: 'Comissão Técnica',
-    imagem: 'src/imagens/foto3.jpg',
+    imagem: 'src/imagens/foto3 (1).jpg',
     tempoLeitura: '2 min',
   },
   {

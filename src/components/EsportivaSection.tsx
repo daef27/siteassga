@@ -40,7 +40,7 @@ export default function EsportivaSection() {
         <div className="grid grid-cols-1 md:grid-cols-12 items-center">
           <div className="md:col-span-7 h-64 sm:h-80 overflow-hidden">
             <img
-              src="src/imagens/foto3.jpg"
+              src="src/imagens/foto3 (1).jpg"
               alt="Equipe de Futsal da ASSGA"
               className="w-full h-full object-cover"
             />

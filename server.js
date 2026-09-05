@@ -81,7 +81,7 @@ let noticiasData = [
     id: 4,
     titulo: 'Treinos e Modalidades Esportivas da ASSGA',
     conteudo: 'A ASSGA segue com treinos regulares no ginásio municipal, incentivando novos associados a praticarem futsal e atividades recreativas.',
-    imagem: 'src/imagens/foto3.jpg',
+    imagem: 'src/imagens/foto3 (1).jpg',
     data: '01/09/2026'
   }
 ];
@@ -169,7 +169,7 @@ let historiaData = {
       titulo: 'Presença Digital e Eventos Especiais',
       data: '2026',
       texto: 'Consolidação da presença digital, carteirinhas de sócios e realizações como o 2º Halloween ASSGA.',
-      imagem: 'src/imagens/foto3.jpg'
+      imagem: 'src/imagens/foto3 (1).jpg'
     }
   ]
 };
@@ -342,7 +342,7 @@ Você orienta associados, atletas e a comunidade surda sobre esportes (futsal, c
 let sliderData = [
   { imagem: 'src/imagens/foto2.jpg', texto: 'Equipe Oficial de Futsal da ASSGA - Conquistas e Esporte' },
   { imagem: 'src/imagens/foto1.jpg', texto: 'Confraternização e União da Comunidade ASSGA' },
-  { imagem: 'src/imagens/foto3.jpg', texto: 'Atletas e Treinos da Associação Desportiva ASSGA' },
+  { imagem: 'src/imagens/foto3 (1).jpg', texto: 'Atletas e Treinos da Associação Desportiva ASSGA' },
   { imagem: 'src/imagens/halloween-assga.jpeg', texto: '2º Festa de Halloween do ASSGA - 28 e 29 de Novembro' },
   { imagem: 'src/imagens/Assga_foto.jpg', texto: 'ASSGA - Associação de Surdos de São Gonçalo do Amarante' }
 ];

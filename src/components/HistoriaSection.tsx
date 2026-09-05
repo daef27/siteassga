@@ -136,7 +136,7 @@ export default function HistoriaSection() {
           <div className="rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 group">
             <div className="h-52 overflow-hidden bg-slate-900">
               <img
-                src="src/imagens/foto3.jpg"
+                src="src/imagens/foto3 (1).jpg"
                 alt="Futsal de Surdos"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />

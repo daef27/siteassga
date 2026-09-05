@@ -3,7 +3,16 @@
 
     function getConfig() {
         try {
-            return JSON.parse(localStorage.getItem('assga_config') || '{}');
+            const config = JSON.parse(localStorage.getItem('assga_config') || '{}');
+            // Garantir que a logo oficial seja estritamente Assga_foto.jpg
+            if (config.logoImg && config.logoImg !== fallbackLogo) {
+                config.logoImg = fallbackLogo;
+                config.faviconImg = fallbackLogo;
+                try {
+                    localStorage.setItem('assga_config', JSON.stringify(config));
+                } catch(e) {}
+            }
+            return config;
         } catch (error) {
             return {};
         }
@@ -11,12 +20,10 @@
 
     function applyBrand() {
         const config = getConfig();
-        const logo = config.logoImg && config.logoImg.startsWith('data:image')
-            ? config.logoImg
-            : fallbackLogo;
-        const favicon = config.faviconImg && config.faviconImg.startsWith('data:image')
+        const logo = fallbackLogo; // Sempre usar a oficial Assga_foto.jpg
+        const favicon = (config.faviconImg && typeof config.faviconImg === 'string' && config.faviconImg.trim().length > 0)
             ? config.faviconImg
-            : logo;
+            : fallbackLogo;
 
         document.querySelectorAll('img').forEach(function (image) {
             if (image.dataset.brandLogo === 'true' || image.id === 'logoImgHeader' || image.closest('.logo-area, .header-logo, .login-box, .admin-auth-box, .carteira-header .logo')) {

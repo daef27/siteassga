@@ -370,8 +370,17 @@
                             </div>
                             <div class="form-group">
                                 <label>Caminho da Imagem ou URL</label>
-                                <input type="text" id="sliderImagem" class="form-control" placeholder="src/imagens/foto1.jpg">
-                                <div class="help-text">Opções rápidas: `src/imagens/foto1.jpg`, `foto2.jpg`, `foto3.jpg`, `Assga_foto.jpg`</div>
+                                <input type="text" id="sliderImagem" class="form-control" placeholder="src/imagens/foto2.jpg">
+                                <div class="help-text" style="margin-top:6px;">
+                                    <strong>Fotos reais da ASSGA (clique para aplicar):</strong>
+                                    <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;">
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="document.getElementById('sliderImagem').value='src/imagens/foto2.jpg'; document.getElementById('sliderTexto').value='Equipe Oficial de Futsal da ASSGA - Conquistas e Esporte';"><i class="fas fa-trophy"></i> Futsal (foto2)</button>
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="document.getElementById('sliderImagem').value='src/imagens/foto1.jpg'; document.getElementById('sliderTexto').value='Confraternização e União da Comunidade ASSGA';"><i class="fas fa-users"></i> Confraternização (foto1)</button>
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="document.getElementById('sliderImagem').value='src/imagens/foto3.jpg'; document.getElementById('sliderTexto').value='Atletas e Treinos da Associação Desportiva ASSGA';"><i class="fas fa-running"></i> Treino (foto3)</button>
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="document.getElementById('sliderImagem').value='src/imagens/halloween-assga.jpeg'; document.getElementById('sliderTexto').value='2º Festa de Halloween do ASSGA - 28 e 29 de Novembro';"><i class="fas fa-ghost"></i> Halloween</button>
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="document.getElementById('sliderImagem').value='src/imagens/Assga_foto.jpg'; document.getElementById('sliderTexto').value='ASSGA - Associação de Surdos de São Gonçalo do Amarante';"><i class="fas fa-shield-alt"></i> Logo ASSGA</button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>Ou Envie uma Foto do Computador</label>
@@ -588,6 +597,16 @@
                             <div class="form-group">
                                 <label>Imagem da Notícia (URL ou caminho)</label>
                                 <input type="text" id="noticiaImagem" class="form-control" placeholder="src/imagens/foto1.jpg">
+                                <div class="help-text" style="margin-top:6px;">
+                                    <small>Fotos da ASSGA (clique para escolher):</small>
+                                    <div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:4px;">
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="document.getElementById('noticiaImagem').value='src/imagens/foto2.jpg'"><i class="fas fa-trophy"></i> Futsal (foto2)</button>
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="document.getElementById('noticiaImagem').value='src/imagens/foto1.jpg'"><i class="fas fa-users"></i> Confraternização (foto1)</button>
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="document.getElementById('noticiaImagem').value='src/imagens/foto3.jpg'"><i class="fas fa-running"></i> Treinos (foto3)</button>
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="document.getElementById('noticiaImagem').value='src/imagens/halloween-assga.jpeg'"><i class="fas fa-ghost"></i> Halloween</button>
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="document.getElementById('noticiaImagem').value='src/imagens/Assga_foto.jpg'"><i class="fas fa-shield-alt"></i> Brasão</button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>Ou Enviar Foto</label>
@@ -649,6 +668,16 @@
                             <div class="form-group">
                                 <label>Imagem do Evento</label>
                                 <input type="text" id="eventoImagem" class="form-control" placeholder="src/imagens/halloween-assga.jpeg">
+                                <div class="help-text" style="margin-top:6px;">
+                                    <small>Fotos da ASSGA (clique para escolher):</small>
+                                    <div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:4px;">
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="document.getElementById('eventoImagem').value='src/imagens/halloween-assga.jpeg'"><i class="fas fa-ghost"></i> Halloween</button>
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="document.getElementById('eventoImagem').value='src/imagens/foto2.jpg'"><i class="fas fa-trophy"></i> Futsal</button>
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="document.getElementById('eventoImagem').value='src/imagens/foto3.jpg'"><i class="fas fa-running"></i> Treinos</button>
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="document.getElementById('eventoImagem').value='src/imagens/foto1.jpg'"><i class="fas fa-users"></i> Confraternização</button>
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="document.getElementById('eventoImagem').value='src/imagens/Assga_foto.jpg'"><i class="fas fa-shield-alt"></i> Brasão</button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>Link do botão de inscrição</label>
@@ -871,28 +900,36 @@
         // DADOS PADRÃO E INICIALIZAÇÃO
         // =============================================================
         const SLIDES_PADRAO = [
-            { imagem: "src/imagens/foto1.jpg", texto: "ASSGA - Associação Desportiva" },
-            { imagem: "src/imagens/foto2.jpg", texto: "Esporte e integração da ASSGA" },
-            { imagem: "src/imagens/foto3.jpg", texto: "Futsal e atividades esportivas ASSGA" }
+            { imagem: "src/imagens/foto2.jpg", texto: "Equipe Oficial de Futsal da ASSGA - Conquistas e Esporte" },
+            { imagem: "src/imagens/foto1.jpg", texto: "Confraternização e União da Comunidade ASSGA" },
+            { imagem: "src/imagens/foto3.jpg", texto: "Atletas e Treinos da Associação Desportiva ASSGA" },
+            { imagem: "src/imagens/halloween-assga.jpeg", texto: "2º Festa de Halloween do ASSGA - 28 e 29 de Novembro" },
+            { imagem: "src/imagens/Assga_foto.jpg", texto: "ASSGA - Associação de Surdos de São Gonçalo do Amarante" }
         ];
 
         const HISTORIAS_PADRAO = [
             {
-                titulo: "A Fundação e as Primeiras Conquistas",
-                data: "2019",
-                texto: "Reuniões iniciais de líderes da comunidade surda para fundar a Associação com foco no esporte e na valorização da Libras.",
+                titulo: "Fundação da ASSGA",
+                data: "23 de Julho de 2024",
+                texto: "Reuniões iniciais e formalização legal da Associação de Surdos de São Gonçalo do Amarante com foco no esporte inclusivo e na valorização da Libras.",
+                imagem: "src/imagens/Assga_foto.jpg"
+            },
+            {
+                titulo: "Confraternização e União Comunitária",
+                data: "2024",
+                texto: "Encontros de fim de ano, confraternizações e acolhimento dos associados e familiares em clima de festa e companheirismo.",
                 imagem: "src/imagens/foto1.jpg"
             },
             {
-                titulo: "Oficialização do Estatuto e Novos Projetos",
-                data: "2024",
-                texto: "Registro legal formal e expansão para novas modalidades esportivas, fortalecendo a representatividade.",
+                titulo: "Equipe Oficial de Futsal e Conquistas",
+                data: "2025",
+                texto: "Grandes vitórias em competições regionais, troféus e medalhas conquistados com muita garra pela equipe de futsal da ASSGA.",
                 imagem: "src/imagens/foto2.jpg"
             },
             {
-                titulo: "Presença Digital e Eventos Especiais",
+                titulo: "Treinos Semanais e Atividades Físicas",
                 data: "2026",
-                texto: "Consolidação da presença digital, carteirinhas de sócios e realizações como o 2º Halloween ASSGA.",
+                texto: "Treinos no ginásio poliesportivo de São Gonçalo do Amarante, promovendo saúde, integração social e novos talentos.",
                 imagem: "src/imagens/foto3.jpg"
             }
         ];
@@ -944,7 +981,7 @@
                 slides = JSON.parse(localStorage.getItem('assga_slider') || 'null');
             } catch(e) {}
 
-            if (!slides || !Array.isArray(slides) || slides.length === 0) {
+            if (!slides || !Array.isArray(slides) || slides.length < 5) {
                 slides = [...SLIDES_PADRAO];
                 localStorage.setItem('assga_slider', JSON.stringify(slides));
             }

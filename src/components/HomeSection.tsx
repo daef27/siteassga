@@ -26,19 +26,29 @@ interface HomeSectionProps {
 
 const SLIDER_PHOTOS = [
   {
-    src: 'src/imagens/foto1.jpg',
-    titulo: 'Mascote e Brasão Oficial da ASSGA',
-    descricao: 'Identidade visual aprovada em assembleia unindo o galo de São Gonçalo e Libras',
+    src: 'src/imagens/foto2.jpg',
+    titulo: 'Equipe Oficial de Futsal da ASSGA',
+    descricao: 'Atletas campeões regionais com troféu e medalhas representando São Gonçalo do Amarante',
   },
   {
-    src: 'src/imagens/foto2.jpg',
-    titulo: 'Confraternização de Sócios e Amigos',
-    descricao: 'União e momentos marcantes da comunidade surda de São Gonçalo do Amarante',
+    src: 'src/imagens/foto1.jpg',
+    titulo: 'Confraternização e Família ASSGA',
+    descricao: 'União, celebração e acolhimento de todos os associados e amigos da comunidade surda',
   },
   {
     src: 'src/imagens/foto3.jpg',
-    titulo: 'Futsal de Surdos da ASSGA',
-    descricao: 'Atletas campeões regionais representando o município com orgulho e determinação',
+    titulo: 'Treinos Semanais em Quadra',
+    descricao: 'Preparação física, técnica e inclusão esportiva no ginásio poliesportivo',
+  },
+  {
+    src: 'src/imagens/halloween-assga.jpeg',
+    titulo: '2º Festa de Halloween da ASSGA',
+    descricao: '28 e 29 de novembro de 2026 • O maior evento temático da comunidade surda potiguar',
+  },
+  {
+    src: 'src/imagens/Assga_foto.jpg',
+    titulo: 'Brasão Oficial Aprovado da ASSGA',
+    descricao: 'Identidade visual definitiva aprovada em assembleia com as mãos em Libras e o símbolo municipal',
   },
 ];
 

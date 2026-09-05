@@ -1,10 +1,8 @@
 import express from 'express';
 import fs from 'fs';
-import https from 'https';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { GoogleGenAI } from '@google/genai';
-import { get as getGlobalConfig } from '@vercel/global-config';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -13,28 +11,23 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = Number(process.env.PORT || 3000);
+const PORT = 3000;
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-app.get('/welcome', async (req, res) => {
-  if (!process.env.GLOBAL_CONFIG && !process.env.EDGE_CONFIG) {
-    return res.status(503).json({
-      error: 'Global Config não configurado.',
-      setup: 'Configure GLOBAL_CONFIG na Vercel.',
-    });
-  }
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    app: 'ASSGA - Associação Desportiva',
+    version: '2.0.0',
+    timestamp: Date.now(),
+  });
+});
 
-  try {
-    const greeting = await getGlobalConfig('greeting');
-    return res.json(greeting ?? { greeting: 'Olá, ASSGA!' });
-  } catch (error) {
-    return res.status(500).json({
-      error: 'Não foi possível ler o Global Config.',
-      message: error.message,
-    });
-  }
+app.get(['/welcome', '/api/welcome'], (req, res) => {
+  res.json({ greeting: 'Olá, ASSGA! Bem-vindo ao portal oficial.' });
 });
 
 // Lazy initialization for Gemini AI client (server-side)
@@ -53,32 +46,79 @@ function getAi() {
 let configData = [{
   id: 1,
   senha: 'ASSGA2026',
-  nome_associacao: 'ASSGA - Associação Desportiva',
+  nome_associacao: 'ASSGA - Associação de Surdos de São Gonçalo do Amarante',
   endereco: 'São Gonçalo do Amarante - RN',
   email: 'assgar2019@gmail.com',
   telefone: '(84) 99698-1248',
-  cnpj: '57.242.499/0001-60'
+  cnpj: '57.242.499/0001-60',
+  logoImg: 'src/imagens/Assga_foto.jpg',
+  faviconImg: 'src/imagens/Assga_foto.jpg'
 }];
 
-let noticiasData = [{
-  id: 1,
-  titulo: '2º HALLOWEEN ASSGA',
-  conteudo: 'Estão abertas as inscrições para o 2º HALLOWEEN ASSGA! Prepare-se para um evento especial com muita diversão, esporte, integração e confraternização.',
-  imagem: 'src/imagens/halloween-assga.jpeg',
-  data: '15/08/2026'
-}];
+let noticiasData = [
+  {
+    id: 1,
+    titulo: '2º HALLOWEEN ASSGA',
+    conteudo: 'Estão abertas as inscrições para o 2º HALLOWEEN ASSGA! Prepare-se para um grande evento nos dias 28 e 29 de novembro de 2026 com muita diversão, esporte, integração e confraternização.',
+    imagem: 'src/imagens/halloween-assga.jpeg',
+    data: '15/08/2026'
+  },
+  {
+    id: 2,
+    titulo: 'Equipe de Futsal da ASSGA em Destaque',
+    conteudo: 'Nossos atletas representam com orgulho a comunidade surda em competições regionais, trazendo medalhas, troféus e fortalecendo o esporte inclusivo potiguar.',
+    imagem: 'src/imagens/foto2.jpg',
+    data: '20/08/2026'
+  },
+  {
+    id: 3,
+    titulo: 'Confraternização e União da Família ASSGA',
+    conteudo: 'Momentos especiais de confraternização, reencontros e celebração entre atletas, diretoria e associados surdos de São Gonçalo do Amarante.',
+    imagem: 'src/imagens/foto1.jpg',
+    data: '25/08/2026'
+  },
+  {
+    id: 4,
+    titulo: 'Treinos e Modalidades Esportivas da ASSGA',
+    conteudo: 'A ASSGA segue com treinos regulares no ginásio municipal, incentivando novos associados a praticarem futsal e atividades recreativas.',
+    imagem: 'src/imagens/foto3.jpg',
+    data: '01/09/2026'
+  }
+];
 
-let eventosData = [{
-  id: 1,
-  titulo: '2º HALLOWEEN ASSGA',
-  descricao: 'Evento especial esportivo e de integração com premiações e confraternização.',
-  data_inicio: '15/10/2026',
-  data_fim: '16/10/2026',
-  local: 'Ginásio Poliesportivo de São Gonçalo do Amarante - RN',
-  vagas: 100,
-  valor: 50.00,
-  status: 'aberto'
-}];
+let eventosData = [
+  {
+    id: 1,
+    titulo: '2º HALLOWEEN ASSGA',
+    descricao: 'Grande festa com esporte, diversão, premiações e confraternização comunitária. Parcelamento em até 2x no cartão ou via PIX CNPJ 57.242.499/0001-60.',
+    data: '28 e 29 de Novembro de 2026',
+    data_inicio: '28/11/2026',
+    data_fim: '29/11/2026',
+    horario: '21h às 17h',
+    local: 'São Gonçalo do Amarante - RN',
+    vagas: 150,
+    valor: 100.00,
+    preco: '100,00',
+    status: 'aberto',
+    imagem: 'src/imagens/halloween-assga.jpeg',
+    linkInscricao: 'pagamento.html'
+  },
+  {
+    id: 2,
+    titulo: 'Torneio Intermunicipal de Futsal da ASSGA',
+    descricao: 'Campeonato de futsal com equipes convidadas do Rio Grande do Norte, premiações em troféus e medalhas.',
+    data: '10 e 11 de Outubro de 2026',
+    data_inicio: '10/10/2026',
+    data_fim: '11/10/2026',
+    local: 'Ginásio Poliesportivo de São Gonçalo do Amarante - RN',
+    vagas: 16,
+    valor: 150.00,
+    preco: '150,00',
+    status: 'aberto',
+    imagem: 'src/imagens/foto2.jpg',
+    linkInscricao: 'pagamento.html'
+  }
+];
 
 let diretoriaData = [{
   id: 1,
@@ -299,6 +339,73 @@ Você orienta associados, atletas e a comunidade surda sobre esportes (futsal, c
   }
 });
 
+let sliderData = [
+  { imagem: 'src/imagens/foto2.jpg', texto: 'Equipe Oficial de Futsal da ASSGA - Conquistas e Esporte' },
+  { imagem: 'src/imagens/foto1.jpg', texto: 'Confraternização e União da Comunidade ASSGA' },
+  { imagem: 'src/imagens/foto3.jpg', texto: 'Atletas e Treinos da Associação Desportiva ASSGA' },
+  { imagem: 'src/imagens/halloween-assga.jpeg', texto: '2º Festa de Halloween do ASSGA - 28 e 29 de Novembro' },
+  { imagem: 'src/imagens/Assga_foto.jpg', texto: 'ASSGA - Associação de Surdos de São Gonçalo do Amarante' }
+];
+
+// In-memory collection API compatible with /api/data?collection=...
+app.get('/api/data', (req, res) => {
+  const collection = String(req.query.collection || '').trim().toLowerCase();
+  switch (collection) {
+    case 'config': {
+      const { senha, ...publicConfig } = configData[0] || {};
+      return res.json(publicConfig);
+    }
+    case 'noticias':
+      return res.json(noticiasData);
+    case 'eventos':
+      return res.json(eventosData);
+    case 'diretoria':
+      return res.json(diretoriaData);
+    case 'estatuto':
+      return res.json(estatutoData);
+    case 'historia':
+      return res.json(historiaData);
+    case 'slider':
+      return res.json(sliderData);
+    case 'inscricoes':
+    case 'socios':
+      return res.status(403).json({ error: 'Acesso restrito. Dados pessoais não são públicos.' });
+    default:
+      return res.json([]);
+  }
+});
+
+app.post('/api/data', (req, res) => {
+  const collection = String(req.query.collection || '').trim().toLowerCase();
+  const payload = req.body;
+  switch (collection) {
+    case 'config':
+      if (payload && typeof payload === 'object') {
+        configData[0] = { ...configData[0], ...payload };
+      }
+      break;
+    case 'noticias':
+      if (Array.isArray(payload)) noticiasData = payload;
+      break;
+    case 'eventos':
+      if (Array.isArray(payload)) eventosData = payload;
+      break;
+    case 'diretoria':
+      if (Array.isArray(payload)) diretoriaData = payload;
+      break;
+    case 'estatuto':
+      if (Array.isArray(payload)) estatutoData = payload;
+      break;
+    case 'historia':
+      if (payload && typeof payload === 'object') historiaData = payload;
+      break;
+    case 'slider':
+      if (Array.isArray(payload)) sliderData = payload;
+      break;
+  }
+  return res.json({ status: 'ok', collection });
+});
+
 // Intercept ?api= queries on any route
 app.use((req, res, next) => {
   if (req.query.api) {
@@ -321,31 +428,51 @@ app.get('/index.php', (req, res) => {
   res.redirect(301, '/');
 });
 
-// Serve the production build when requested; local development keeps legacy files available.
-const staticRoot = process.env.NODE_ENV === 'production'
+// Serve static assets
+const staticRoot = process.env.NODE_ENV === 'production' && fs.existsSync(path.join(__dirname, 'dist'))
   ? path.join(__dirname, 'dist')
   : __dirname;
+
+// Explicit static routes for images to ensure availability across all subpaths
+app.use('/src/imagens', express.static(path.join(__dirname, 'public/src/imagens')));
+app.use('/src/imagens', express.static(path.join(__dirname, 'src/imagens')));
+app.use('/imagens', express.static(path.join(__dirname, 'public/src/imagens')));
+app.use('/imagens', express.static(path.join(__dirname, 'src/imagens')));
+
+if (fs.existsSync(path.join(__dirname, 'public'))) {
+  app.use(express.static(path.join(__dirname, 'public')));
+}
 app.use(express.static(staticRoot));
+
+// Clean URLs matching vercel.json rewrites
+const cleanPages = [
+  'admin',
+  'carteirinha-impressa',
+  'diretoria',
+  'esportiva',
+  'estatuto',
+  'evento',
+  'historia',
+  'login',
+  'logo',
+  'pagamento',
+];
+
+cleanPages.forEach((page) => {
+  app.get(`/${page}`, (req, res) => {
+    const filePath = path.join(staticRoot, `${page}.html`);
+    if (fs.existsSync(filePath)) {
+      return res.sendFile(filePath);
+    }
+    res.sendFile(path.join(staticRoot, 'index.html'));
+  });
+});
 
 // Default route
 app.get('/', (req, res) => {
   res.sendFile(path.join(staticRoot, 'index.html'));
 });
 
-// Use HTTPS when certificate paths are provided; local development remains HTTP.
-const httpsKey = process.env.HTTPS_KEY;
-const httpsCert = process.env.HTTPS_CERT;
-if (httpsKey && httpsCert) {
-  const server = https.createServer({
-    key: fs.readFileSync(path.resolve(__dirname, httpsKey)),
-    cert: fs.readFileSync(path.resolve(__dirname, httpsCert)),
-  }, app);
-  server.listen(PORT, '0.0.0.0', () => {
-    console.log(`ASSGA site server running on https://0.0.0.0:${PORT}`);
-  });
-} else {
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`ASSGA site server running on http://0.0.0.0:${PORT}`);
-    console.log('HTTPS desativado: configure HTTPS_KEY e HTTPS_CERT para ativá-lo.');
-  });
-}
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`ASSGA site server running on http://0.0.0.0:${PORT}`);
+});

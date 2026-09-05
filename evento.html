@@ -319,7 +319,7 @@
     <header>
         <div class="logo-area">
             <a href="/" aria-label="Página inicial ASSGA">
-                <img src="src/imagens/Assga_foto.jpg" alt="Logo da ASSGA">
+                <img id="logoImgHeader" src="src/imagens/Assga_foto.jpg" alt="Brasão Oficial ASSGA (Assga_foto.jpg)" data-brand-logo="true" style="width:56px;height:auto;max-height:68px;object-fit:contain;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));">
             </a>
             <div class="logo">ASSGA</div>
         </div>
@@ -478,19 +478,54 @@
         // CARREGAR EVENTOS COM IMAGEM
         function carregarEventos() {
             const container = document.getElementById('listaEventosPagina');
-            let eventos = JSON.parse(localStorage.getItem('assga_eventos') || '[]');
+            let eventos = [];
+            try {
+                eventos = JSON.parse(localStorage.getItem('assga_eventos') || '[]');
+            } catch(e) {}
 
-            if (eventos.length === 0) {
-                eventos = [{
-                    titulo: '2º HALLOWEEN ASSGA',
-                    data: '15 e 16 de outubro de 2026',
-                    local: 'Ginásio Poliesportivo de São Gonçalo do Amarante - RN',
-                    preco: '50,00',
-                    status: 'Aberto',
-                    imagem: 'src/imagens/halloween-assga.jpeg',
-                    linkInscricao: 'pagamento.html',
-                    descricao: 'Evento especial esportivo e de integração com premiações e confraternização.'
-                }];
+            if (!eventos || !Array.isArray(eventos) || eventos.length < 4) {
+                eventos = [
+                    {
+                        titulo: '2º HALLOWEEN ASSGA (28 e 29 de Novembro)',
+                        data: '28 e 29 de Novembro de 2026 (21h às 17h)',
+                        local: 'São Gonçalo do Amarante - RN',
+                        preco: '100,00 (em até 2x no cartão ou via PIX)',
+                        status: 'Aberto',
+                        imagem: 'src/imagens/halloween-assga.jpeg',
+                        linkInscricao: 'pagamento.html',
+                        descricao: 'Grande festa temática de Halloween com confraternização, esporte, integração e diversão da comunidade surda potiguar. Vagas limitadas (100 participantes)!'
+                    },
+                    {
+                        titulo: 'Torneio Intermunicipal de Futsal da ASSGA',
+                        data: '10 e 11 de Outubro de 2026',
+                        local: 'Ginásio Poliesportivo de São Gonçalo do Amarante - RN',
+                        preco: '150,00 por equipe',
+                        status: 'Aberto',
+                        imagem: 'src/imagens/foto2.jpg',
+                        linkInscricao: 'pagamento.html',
+                        descricao: 'Campeonato esportivo com equipes convidadas do RN, premiação com troféus, medalhas e confraternização de atletas surdos.'
+                    },
+                    {
+                        titulo: 'Treino Aberto e Amistoso da Comunidade',
+                        data: 'Sábado, 05 de Setembro de 2026 - 15h',
+                        local: 'Ginásio Municipal de São Gonçalo do Amarante',
+                        preco: 'Gratuito para associados',
+                        status: 'Aberto',
+                        imagem: 'src/imagens/foto3.jpg',
+                        linkInscricao: 'pagamento.html',
+                        descricao: 'Treino esportivo aberto para novos atletas, jovens e comunidade surda praticarem futsal e se prepararem para as competições.'
+                    },
+                    {
+                        titulo: 'Confraternização e Encontro da Família ASSGA',
+                        data: '19 de Dezembro de 2026 - 12h',
+                        local: 'Sede Comunitária - São Gonçalo do Amarante',
+                        preco: '40,00 por pessoa',
+                        status: 'Aberto',
+                        imagem: 'src/imagens/foto1.jpg',
+                        linkInscricao: 'pagamento.html',
+                        descricao: 'Festa anual de confraternização de associados, voluntários e familiares com homenagens, dinâmicas e celebração em Libras.'
+                    }
+                ];
                 localStorage.setItem('assga_eventos', JSON.stringify(eventos));
             }
 
@@ -548,11 +583,22 @@
         // CARREGAR LOGO DO localStorage
         // =============================================================
         function carregarLogo() {
-            const config = JSON.parse(localStorage.getItem('assga_config') || '{}');
+            let config = {};
+            try {
+                config = JSON.parse(localStorage.getItem('assga_config') || '{}');
+            } catch(e) {}
+
             const logoImg = document.querySelector('.logo-area img');
             const logoTxt = document.querySelector('.logo');
-            if (logoImg && config.logoImg && config.logoImg.startsWith('data:image')) {
-                logoImg.src = config.logoImg;
+
+            if (config.logoImg && config.logoImg !== 'src/imagens/Assga_foto.jpg') {
+                config.logoImg = 'src/imagens/Assga_foto.jpg';
+                config.faviconImg = 'src/imagens/Assga_foto.jpg';
+                try { localStorage.setItem('assga_config', JSON.stringify(config)); } catch(e) {}
+            }
+
+            if (logoImg) {
+                logoImg.src = 'src/imagens/Assga_foto.jpg';
             }
             if (logoTxt && config.logoTxt) {
                 logoTxt.textContent = config.logoTxt;

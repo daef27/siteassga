@@ -26,7 +26,7 @@
 </head>
 <body>
     <div class="login-box">
-        <img src="src/imagens/Assga_foto.jpg" alt="ASSGA">
+        <img id="logoImgHeader" src="src/imagens/Assga_foto.jpg" alt="ASSGA (Assga_foto.jpg)" data-brand-logo="true" style="width:72px;height:auto;max-height:88px;object-fit:contain;margin-bottom:15px;">
         <h1><i class="fas fa-id-card"></i> Área do Sócio</h1>
         <p>Informe seu CPF e senha para acessar sua carteirinha digital.</p>
         <form id="loginForm">
@@ -56,10 +56,18 @@
         // CARREGAR LOGO DO localStorage
         // =============================================================
         function carregarLogo() {
-            const config = JSON.parse(localStorage.getItem('assga_config') || '{}');
+            let config = {};
+            try {
+                config = JSON.parse(localStorage.getItem('assga_config') || '{}');
+            } catch(e) {}
             const logoImg = document.querySelector('.login-box img');
-            if (logoImg && config.logoImg && config.logoImg.startsWith('data:image')) {
-                logoImg.src = config.logoImg;
+            if (config.logoImg && config.logoImg !== 'src/imagens/Assga_foto.jpg') {
+                config.logoImg = 'src/imagens/Assga_foto.jpg';
+                config.faviconImg = 'src/imagens/Assga_foto.jpg';
+                try { localStorage.setItem('assga_config', JSON.stringify(config)); } catch(e) {}
+            }
+            if (logoImg) {
+                logoImg.src = 'src/imagens/Assga_foto.jpg';
             }
         }
 

@@ -316,7 +316,7 @@
     <header>
         <div class="logo-area">
             <a href="/" aria-label="Página inicial ASSGA">
-                <img src="src/imagens/Assga_foto.jpg" alt="Logo da ASSGA" id="logoImgHeader">
+                <img id="logoImgHeader" src="src/imagens/Assga_foto.jpg" alt="Brasão Oficial ASSGA (Assga_foto.jpg)" data-brand-logo="true" style="width:56px;height:auto;max-height:68px;object-fit:contain;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));">
             </a>
             <div class="logo" id="logoTxtHeader">ASSGA</div>
         </div>
@@ -531,8 +531,13 @@
                 const config = JSON.parse(localStorage.getItem('assga_config') || '{}');
                 const img = document.getElementById('logoImgHeader');
                 const txt = document.getElementById('logoTxtHeader');
-                if (img && config.logoImg && isRealImage(config.logoImg)) {
-                    img.src = config.logoImg;
+                if (config.logoImg && config.logoImg !== 'src/imagens/Assga_foto.jpg') {
+                    config.logoImg = 'src/imagens/Assga_foto.jpg';
+                    config.faviconImg = 'src/imagens/Assga_foto.jpg';
+                    try { localStorage.setItem('assga_config', JSON.stringify(config)); } catch(e) {}
+                }
+                if (img) {
+                    img.src = 'src/imagens/Assga_foto.jpg';
                 }
                 if (txt && config.logoTxt) {
                     txt.textContent = config.logoTxt;

@@ -331,7 +331,7 @@
     <header>
         <div class="logo-area">
             <a href="/" aria-label="Página inicial ASSGA">
-                <img src="src/imagens/Assga_foto.jpg" alt="Logo da ASSGA">
+                <img id="logoImgHeader" src="src/imagens/Assga_foto.jpg" alt="Brasão Oficial ASSGA (Assga_foto.jpg)" data-brand-logo="true" style="width:56px;height:auto;max-height:68px;object-fit:contain;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));">
             </a>
             <div class="logo">ASSGA</div>
         </div>
@@ -605,11 +605,22 @@
         // CARREGAR LOGO DO localStorage
         // =============================================================
         function carregarLogo() {
-            const config = JSON.parse(localStorage.getItem('assga_config') || '{}');
+            let config = {};
+            try {
+                config = JSON.parse(localStorage.getItem('assga_config') || '{}');
+            } catch(e) {}
+
             const logoImg = document.querySelector('.logo-area img');
             const logoTxt = document.querySelector('.logo');
-            if (logoImg && config.logoImg && config.logoImg.startsWith('data:image')) {
-                logoImg.src = config.logoImg;
+
+            if (config.logoImg && config.logoImg !== 'src/imagens/Assga_foto.jpg') {
+                config.logoImg = 'src/imagens/Assga_foto.jpg';
+                config.faviconImg = 'src/imagens/Assga_foto.jpg';
+                try { localStorage.setItem('assga_config', JSON.stringify(config)); } catch(e) {}
+            }
+
+            if (logoImg) {
+                logoImg.src = 'src/imagens/Assga_foto.jpg';
             }
             if (logoTxt && config.logoTxt) {
                 logoTxt.textContent = config.logoTxt;

@@ -426,7 +426,7 @@
     <header>
         <div class="logo-area">
             <a href="/" aria-label="Página inicial ASSGA">
-                <img src="src/imagens/Assga_foto.jpg" alt="Logo da ASSGA">
+                <img id="logoImgHeader" src="src/imagens/Assga_foto.jpg" alt="Brasão Oficial ASSGA (Assga_foto.jpg)" data-brand-logo="true" style="width:56px;height:auto;max-height:68px;object-fit:contain;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));">
             </a>
             <div class="logo">ASSGA</div>
         </div>
@@ -609,10 +609,16 @@
                     imagem: "src/imagens/foto2.jpg"
                 },
                 {
-                    titulo: "Presença Digital e Eventos Especiais",
-                    data: "2026",
-                    texto: "Consolidação da presença digital, carteirinhas de sócios e realizações como o 2º Halloween ASSGA.",
+                    titulo: "Presença Digital e Treinos Oficiais",
+                    data: "2024 - 2026",
+                    texto: "Consolidação da presença digital, treinos regulares no ginásio municipal e fortalecimento das modalidades esportivas para surdos.",
                     imagem: "src/imagens/foto3.jpg"
+                },
+                {
+                    titulo: "Grandes Eventos e Integração Cultural",
+                    data: "2026",
+                    texto: "Realização de grandes eventos temáticos e culturais como o 2º Halloween ASSGA, unindo esporte, cultura e lazer da comunidade.",
+                    imagem: "src/imagens/halloween-assga.jpeg"
                 }
             ]
         };
@@ -620,7 +626,7 @@
         function renderHistoria() {
             // Carregar dados do admin ou usar padrão
             const stored = JSON.parse(localStorage.getItem("assga_conteudos") || "{}");
-            const data = stored.historia || defaultHistoria;
+            const data = (stored.historia && stored.historia.itens && stored.historia.itens.length >= 5) ? stored.historia : defaultHistoria;
 
             // Preencher banner
             const tituloBanner = document.getElementById("histTituloBanner");
@@ -734,11 +740,24 @@
         // CARREGAR LOGO DO localStorage
         // =============================================================
         function carregarLogo() {
-            const config = JSON.parse(localStorage.getItem('assga_config') || '{}');
+            let config = {};
+            try {
+                config = JSON.parse(localStorage.getItem('assga_config') || '{}');
+            } catch(e) {}
+
             const logoImg = document.querySelector('.logo-area img');
             const logoTxt = document.querySelector('.logo');
-            if (logoImg && config.logoImg && config.logoImg.startsWith('data:image')) {
-                logoImg.src = config.logoImg;
+
+            if (config.logoImg && config.logoImg !== 'src/imagens/Assga_foto.jpg') {
+                config.logoImg = 'src/imagens/Assga_foto.jpg';
+                config.faviconImg = 'src/imagens/Assga_foto.jpg';
+                try {
+                    localStorage.setItem('assga_config', JSON.stringify(config));
+                } catch(e) {}
+            }
+
+            if (logoImg) {
+                logoImg.src = 'src/imagens/Assga_foto.jpg';
             }
             if (logoTxt && config.logoTxt) {
                 logoTxt.textContent = config.logoTxt;

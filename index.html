@@ -39,8 +39,8 @@
         }
         .logo-area { display: flex; align-items: center; gap: 15px; cursor: pointer; transition: transform .3s ease; }
         .logo-area:hover { transform: scale(1.05); }
-        .logo-area a { display: flex; text-decoration: none; }
-        .logo-area img { width: 56px;}
+        .logo-area a { display: flex; text-decoration: none; align-items: center; }
+        .logo-area img { width: 56px; height: auto; max-height: 68px; object-fit: contain; display: block; border-radius: 4px; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3)); transition: transform .3s ease; }
         .logo { font-size: 28px; font-weight: 900; letter-spacing: 2px; background: linear-gradient(135deg, #ffd700, #ffed4e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 
         .menu {
@@ -389,6 +389,177 @@
         }
         .info-card a:hover { color: #003366; background: #ffd700; transform: scale(1.15); }
 
+        /* GALERIA DE FOTOS OFICIAL DA ASSGA */
+        .galeria-fotos {
+            max-width: 1200px;
+            margin: 50px auto 30px;
+            padding: 0 20px;
+        }
+        .galeria-subtitulo {
+            text-align: center;
+            color: #555;
+            font-size: 15px;
+            margin: -20px auto 35px;
+            font-weight: 600;
+        }
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 22px;
+        }
+        .galeria-card {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 51, 102, 0.08);
+            border: 1px solid rgba(0, 51, 102, 0.1);
+            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+        .galeria-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 32px rgba(0, 51, 102, 0.18);
+            border-color: #ffd700;
+        }
+        .galeria-thumb {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            background: #001f3f;
+            overflow: hidden;
+        }
+        .galeria-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.5s ease;
+        }
+        .galeria-card:hover .galeria-thumb img {
+            transform: scale(1.08);
+        }
+        .galeria-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(0, 31, 63, 0.85);
+            backdrop-filter: blur(6px);
+            color: #ffd700;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255, 215, 0, 0.4);
+        }
+        .galeria-card-info {
+            padding: 16px 18px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .galeria-card-info h4 {
+            margin: 0 0 6px;
+            font-size: 16px;
+            color: #003366;
+            font-weight: 800;
+            line-height: 1.35;
+        }
+        .galeria-card-info p {
+            margin: 0;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+        .galeria-btn-ver {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #004aad;
+            font-weight: 700;
+            font-size: 12px;
+            margin-top: 12px;
+        }
+
+        /* MODAL DE FOTO */
+        .foto-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: rgba(0, 20, 45, 0.92);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .foto-modal.active {
+            display: flex;
+        }
+        .foto-modal-content {
+            background: #fff;
+            max-width: 900px;
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .foto-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            z-index: 10;
+            transition: all 0.2s ease;
+        }
+        .foto-modal-close:hover {
+            background: #dc3545;
+            transform: scale(1.1);
+        }
+        .foto-modal-img {
+            width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            background: #051329;
+            display: block;
+        }
+        .foto-modal-caption {
+            padding: 20px 24px;
+            background: #fff;
+        }
+        .foto-modal-caption h3 {
+            margin: 0 0 6px;
+            color: #003366;
+            font-size: 20px;
+            font-weight: 800;
+        }
+        .foto-modal-caption p {
+            margin: 0;
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
         footer {
             background: linear-gradient(135deg, #003366 0%, #002244 100%);
             color: #fff;
@@ -430,7 +601,7 @@
         @media (max-width: 767px) {
             header { padding: 12px 15px; }
             .logo-area { gap: 10px; }
-            .logo-area img { width: 48px; height: 60px; }
+            .logo-area img { width: 48px; height: auto; max-height: 60px; object-fit: contain; }
             .logo { font-size: 18px; }
             .menu-toggle { display: flex; }
             .menu {
@@ -492,7 +663,7 @@
     <header>
         <div class="logo-area">
             <a href="/" aria-label="Página inicial ASSGA">
-                <img src="src/imagens/Assga_foto.jpg" alt="Logo da ASSGA">
+                <img id="logoImgHeader" src="src/imagens/Assga_foto.jpg" alt="Brasão Oficial ASSGA (Assga_foto.jpg)" data-brand-logo="true" style="width:56px;height:auto;max-height:68px;object-fit:contain;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));">
             </a>
             <div class="logo">ASSGA</div>
         </div>
@@ -524,7 +695,7 @@
         </button>
 
         <!-- Imagem do Slide -->
-        <img id="slide" src="src/imagens/foto1.jpg" alt="ASSGA - Fotos do Momento">
+        <img id="slide" src="src/imagens/foto2.jpg" alt="Equipe Oficial de Futsal da ASSGA - Conquistas e Esporte">
 
         <!-- Botão Próximo > -->
         <button type="button" class="slider-btn next" id="sliderNext" aria-label="Próxima foto do momento" title="Próxima foto (>)">
@@ -538,8 +709,8 @@
         <div class="slider-info" id="sliderInfo">
             <span class="slider-info-tag"><i class="fas fa-camera"></i> Fotos do Momento</span>
             <span class="slider-separator">•</span>
-            <span id="sliderTexto"><i class="fas fa-shield-halved"></i> ASSGA - Associação Desportiva</span>
-            <span class="slider-counter" id="sliderCounter">(1/3)</span>
+            <span id="sliderTexto"><i class="fas fa-futbol"></i> Equipe Oficial de Futsal da ASSGA - Conquistas e Esporte</span>
+            <span class="slider-counter" id="sliderCounter">(1/5)</span>
         </div>
     </section>
 
@@ -548,6 +719,91 @@
         <h2><i class="fas fa-newspaper"></i> Notícias</h2>
         <div id="containerNoticias"></div>
     </main>
+
+    <!-- ===== GALERIA DE FOTOS OFICIAL DA ASSGA ===== -->
+    <section class="galeria-fotos" id="galeriaFotosSection" aria-label="Galeria de Fotos da ASSGA">
+        <h2><i class="fas fa-images"></i> Galeria de Fotos da ASSGA</h2>
+        <p class="galeria-subtitulo"><i class="fas fa-camera"></i> Nossas fotos oficiais: atletas, conquistas, treinos, eventos e confraternização</p>
+        
+        <div class="galeria-grid">
+            <!-- Foto 2: Equipe de Futsal Oficial -->
+            <div class="galeria-card" onclick="abrirFotoModal('src/imagens/foto2.jpg', 'Equipe Oficial de Futsal da ASSGA', 'Atletas campeões em quadra perfilados com o troféu e medalhas, representando com orgulho a comunidade surda de São Gonçalo do Amarante.')">
+                <div class="galeria-thumb">
+                    <img src="src/imagens/foto2.jpg" alt="Equipe Oficial de Futsal da ASSGA" loading="lazy" onerror="this.src='src/imagens/Assga_foto.jpg'">
+                    <span class="galeria-badge"><i class="fas fa-trophy"></i> Futsal Campeão</span>
+                </div>
+                <div class="galeria-card-info">
+                    <h4>Equipe Oficial de Futsal</h4>
+                    <p>Atletas perfilados em quadra com troféu e medalhas de destaque regional.</p>
+                    <span class="galeria-btn-ver"><i class="fas fa-search-plus"></i> Ampliar foto</span>
+                </div>
+            </div>
+
+            <!-- Foto 1: Confraternização -->
+            <div class="galeria-card" onclick="abrirFotoModal('src/imagens/foto1.jpg', 'Confraternização da Comunidade ASSGA', 'Encontro fraterno com associados, voluntários e familiares da comunidade surda reunidos em celebração.')">
+                <div class="galeria-thumb">
+                    <img src="src/imagens/foto1.jpg" alt="Confraternização da Família ASSGA" loading="lazy" onerror="this.src='src/imagens/Assga_foto.jpg'">
+                    <span class="galeria-badge"><i class="fas fa-users"></i> Confraternização</span>
+                </div>
+                <div class="galeria-card-info">
+                    <h4>Confraternização Comunitária</h4>
+                    <p>União e acolhimento dos sócios e amigos em clima de celebração natalina.</p>
+                    <span class="galeria-btn-ver"><i class="fas fa-search-plus"></i> Ampliar foto</span>
+                </div>
+            </div>
+
+            <!-- Foto 3: Treinos em Quadra -->
+            <div class="galeria-card" onclick="abrirFotoModal('src/imagens/foto3.jpg', 'Treinos Semanais no Ginásio Poliesportivo', 'Preparação física e técnica dos atletas da ASSGA no ginásio municipal de São Gonçalo do Amarante.')">
+                <div class="galeria-thumb">
+                    <img src="src/imagens/foto3.jpg" alt="Treinos da ASSGA no Ginásio" loading="lazy" onerror="this.src='src/imagens/Assga_foto.jpg'">
+                    <span class="galeria-badge"><i class="fas fa-running"></i> Treinos em Quadra</span>
+                </div>
+                <div class="galeria-card-info">
+                    <h4>Treinos no Ginásio Municipal</h4>
+                    <p>Preparação tática e integração dos atletas nas modalidades esportivas.</p>
+                    <span class="galeria-btn-ver"><i class="fas fa-search-plus"></i> Ampliar foto</span>
+                </div>
+            </div>
+
+            <!-- Halloween ASSGA -->
+            <div class="galeria-card" onclick="abrirFotoModal('src/imagens/halloween-assga.jpeg', '2º Festa de Halloween da ASSGA', 'Cartaz oficial da festa temático nos dias 28 e 29 de novembro de 2026. Inscrições abertas com apenas 100 vagas!')">
+                <div class="galeria-thumb">
+                    <img src="src/imagens/halloween-assga.jpeg" alt="Cartaz Oficial do 2º Halloween ASSGA" loading="lazy" onerror="this.src='src/imagens/Assga_foto.jpg'">
+                    <span class="galeria-badge" style="background:#ff7518;color:#000;border-color:#ff7518;"><i class="fas fa-ghost"></i> 2º Halloween</span>
+                </div>
+                <div class="galeria-card-info">
+                    <h4>2º Halloween da ASSGA</h4>
+                    <p>Cartaz oficial do evento com data (28 e 29 de novembro), PIX e parcelamento.</p>
+                    <span class="galeria-btn-ver"><i class="fas fa-search-plus"></i> Ampliar foto</span>
+                </div>
+            </div>
+
+            <!-- Brasão ASSGA -->
+            <div class="galeria-card" onclick="abrirFotoModal('src/imagens/Assga_foto.jpg', 'Brasão Oficial Aprovado da ASSGA', 'Associação de Surdos de São Gonçalo do Amarante - Fundada em 23/07/2024. O símbolo une o galo municipal e o sinal em Libras.')">
+                <div class="galeria-thumb" style="background:#f0f4f8;">
+                    <img src="src/imagens/Assga_foto.jpg" alt="Brasão Oficial Aprovado da ASSGA" loading="lazy" style="object-fit:contain;padding:12px;">
+                    <span class="galeria-badge"><i class="fas fa-shield-alt"></i> Brasão Oficial</span>
+                </div>
+                <div class="galeria-card-info">
+                    <h4>Brasão Oficial Aprovado</h4>
+                    <p>Identidade visual com as mãos em Libras e fundação em 23/07/2024.</p>
+                    <span class="galeria-btn-ver"><i class="fas fa-search-plus"></i> Ampliar foto</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Visualização de Foto -->
+    <div class="foto-modal" id="fotoModal" onclick="fecharFotoModal(event)">
+        <div class="foto-modal-content" onclick="event.stopPropagation()">
+            <button class="foto-modal-close" onclick="fecharFotoModal()" aria-label="Fechar visualização" title="Fechar">&times;</button>
+            <img class="foto-modal-img" id="fotoModalImg" src="" alt="Visualização de foto da ASSGA">
+            <div class="foto-modal-caption">
+                <h3 id="fotoModalTitulo">Título da Foto</h3>
+                <p id="fotoModalDesc">Descrição da Foto</p>
+            </div>
+        </div>
+    </div>
 
     <!-- ===== FALE CONOSCO ===== -->
     <section class="info">
@@ -669,19 +925,23 @@
             if (stored) {
                 try {
                     const slides = JSON.parse(stored);
-                    if (Array.isArray(slides) && slides.length > 0) {
+                    if (Array.isArray(slides) && slides.length >= 5) {
                         return slides;
                     }
                 } catch (e) { /* ignora */ }
             }
-            return [
-                { imagem: "src/imagens/foto1.jpg", texto: "ASSGA - Associação Desportiva" },
-                { imagem: "src/imagens/foto2.jpg", texto: "Esporte e integração da ASSGA" },
-                { imagem: "src/imagens/foto3.jpg", texto: "Futsal e atividades esportivas ASSGA" }
+            const padrao = [
+                { imagem: "src/imagens/foto2.jpg", texto: "Equipe Oficial de Futsal da ASSGA - Conquistas e Esporte" },
+                { imagem: "src/imagens/foto1.jpg", texto: "Confraternização e União da Comunidade ASSGA" },
+                { imagem: "src/imagens/foto3.jpg", texto: "Atletas e Treinos da Associação Desportiva ASSGA" },
+                { imagem: "src/imagens/halloween-assga.jpeg", texto: "2º Festa de Halloween do ASSGA - 28 e 29 de Novembro" },
+                { imagem: "src/imagens/Assga_foto.jpg", texto: "ASSGA - Associação de Surdos de São Gonçalo do Amarante" }
             ];
+            try { localStorage.setItem('assga_slider', JSON.stringify(padrao)); } catch(e){}
+            return padrao;
         }
 
-        const slides = obterSlides();
+        let slides = obterSlides();
         let index = 0;
         let intervaloSlider;
 
@@ -840,20 +1100,67 @@
 
         function carregarNoticias() {
             const container = document.getElementById('containerNoticias');
-            const noticias = JSON.parse(localStorage.getItem('assga_noticias') || '[]');
+            let noticias = [];
+            try {
+                noticias = JSON.parse(localStorage.getItem('assga_noticias') || '[]');
+            } catch(e) {}
 
-            if (noticias.length === 0) {
+            if (!noticias || !Array.isArray(noticias) || noticias.length < 5) {
                 container.innerHTML = `
                     <article class="noticia-item">
                         <a class="noticia-imagem" href="src/imagens/halloween-assga.jpeg" target="_blank" rel="noopener noreferrer">
                             <img src="src/imagens/halloween-assga.jpeg" alt="2º Halloween ASSGA" onerror="this.src='src/imagens/Assga_foto.jpg'">
                         </a>
                         <div class="texto">
-                            <h3><i class="fas fa-ghost"></i> 2º HALLOWEEN ASSGA</h3>
+                            <h3><i class="fas fa-ghost"></i> 2º HALLOWEEN ASSGA (28 e 29 de Novembro)</h3>
                             <data datetime="2026-08-15T17:00"><i class="fas fa-calendar-check"></i> Publicado em 15 de agosto de 2026</data>
                             <p><strong><i class="fas fa-bullhorn"></i> Estão abertas as inscrições para o 2º HALLOWEEN ASSGA!</strong></p>
-                            <p><i class="fas fa-star"></i> Prepare-se para um evento especial com muita diversão, esporte, integração e confraternização.</p>
+                            <p><i class="fas fa-star"></i> Prepare-se para um evento especial nos dias 28 e 29 de novembro de 2026 com muita diversão, esporte, integração e confraternização. Apenas 100 vagas disponíveis, parcelamento em até 2x no cartão!</p>
                             <div style="margin-top:15px;"><a href="pagamento.html" class="botao-inscricao" style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#003366 0%,#004aad 55%,#0066cc 100%);color:#fff;padding:15px 30px;border-radius:30px;text-decoration:none;font-size:16px;font-weight:800;border:2px solid #ffd700;box-shadow:0 8px 20px rgba(0,51,102,.30);transition:all .3s ease;"><i class="fas fa-ticket"></i> Fazer inscrição <i class="fas fa-arrow-right"></i></a></div>
+                        </div>
+                    </article>
+                    <article class="noticia-item">
+                        <a class="noticia-imagem" href="src/imagens/foto2.jpg" target="_blank" rel="noopener noreferrer">
+                            <img src="src/imagens/foto2.jpg" alt="Equipe Oficial de Futsal da ASSGA" onerror="this.src='src/imagens/Assga_foto.jpg'">
+                        </a>
+                        <div class="texto">
+                            <h3><i class="fas fa-trophy"></i> Equipe Oficial de Futsal da ASSGA em Destaque</h3>
+                            <data datetime="2026-08-20T10:00"><i class="fas fa-calendar-check"></i> Publicado em 20 de agosto de 2026</data>
+                            <p><strong><i class="fas fa-medal"></i> Conquistas e dedicação nas quadras esportivas!</strong></p>
+                            <p>Nossos atletas representam com muito orgulho a comunidade surda em competições regionais, trazendo medalhas, troféus e fortalecendo o esporte potiguar.</p>
+                        </div>
+                    </article>
+                    <article class="noticia-item">
+                        <a class="noticia-imagem" href="src/imagens/foto1.jpg" target="_blank" rel="noopener noreferrer">
+                            <img src="src/imagens/foto1.jpg" alt="Confraternização da ASSGA" onerror="this.src='src/imagens/Assga_foto.jpg'">
+                        </a>
+                        <div class="texto">
+                            <h3><i class="fas fa-users"></i> Confraternização e Família ASSGA</h3>
+                            <data datetime="2026-08-25T14:00"><i class="fas fa-calendar-check"></i> Publicado em 25 de agosto de 2026</data>
+                            <p><strong><i class="fas fa-heart"></i> Integração e acolhimento em São Gonçalo do Amarante.</strong></p>
+                            <p>Momentos inesquecíveis de celebração, união e reencontros entre associados, diretoria e familiares da comunidade surda com gorros natalinos e confraternização.</p>
+                        </div>
+                    </article>
+                    <article class="noticia-item">
+                        <a class="noticia-imagem" href="src/imagens/foto3.jpg" target="_blank" rel="noopener noreferrer">
+                            <img src="src/imagens/foto3.jpg" alt="Treinos da ASSGA" onerror="this.src='src/imagens/Assga_foto.jpg'">
+                        </a>
+                        <div class="texto">
+                            <h3><i class="fas fa-running"></i> Treinos e Modalidades Esportivas Regulares</h3>
+                            <data datetime="2026-09-01T09:00"><i class="fas fa-calendar-check"></i> Publicado em 01 de setembro de 2026</data>
+                            <p><strong><i class="fas fa-dumbbell"></i> Incentivo ao esporte e à qualidade de vida.</strong></p>
+                            <p>A ASSGA realiza treinos regulares e incentiva jovens e adultos a participarem das modalidades esportivas no ginásio municipal de São Gonçalo do Amarante.</p>
+                        </div>
+                    </article>
+                    <article class="noticia-item">
+                        <a class="noticia-imagem" href="src/imagens/Assga_foto.jpg" target="_blank" rel="noopener noreferrer">
+                            <img src="src/imagens/Assga_foto.jpg" alt="Brasão Oficial Aprovado da ASSGA" onerror="this.src='src/imagens/Assga_foto.jpg'" style="object-fit:contain;background:#fff;padding:10px;">
+                        </a>
+                        <div class="texto">
+                            <h3><i class="fas fa-shield-alt"></i> Identidade Visual e Brasão Oficial Aprovados</h3>
+                            <data datetime="2026-09-05T08:00"><i class="fas fa-calendar-check"></i> Publicado em 05 de setembro de 2026</data>
+                            <p><strong><i class="fas fa-check-circle"></i> Símbolo oficial aprovado por unanimidade!</strong></p>
+                            <p>A Associação de Surdos de São Gonçalo do Amarante (Fundada em 23/07/2024) conta com o brasão oficial aprovado unindo as mãos em Libras e a cultura da nossa cidade.</p>
                         </div>
                     </article>
                 `;
@@ -878,6 +1185,41 @@
         }
 
         // =============================================================
+        // MODAL DE VISUALIZAÇÃO DE FOTO DA GALERIA
+        // =============================================================
+        function abrirFotoModal(src, titulo, desc) {
+            const modal = document.getElementById('fotoModal');
+            const img = document.getElementById('fotoModalImg');
+            const titEl = document.getElementById('fotoModalTitulo');
+            const descEl = document.getElementById('fotoModalDesc');
+            if (!modal || !img) return;
+
+            img.src = src;
+            img.alt = titulo || 'Foto da ASSGA';
+            if (titEl) titEl.textContent = titulo || 'Foto da ASSGA';
+            if (descEl) descEl.textContent = desc || '';
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharFotoModal(event) {
+            if (event && event.target && event.target.id !== 'fotoModal' && !event.target.classList.contains('foto-modal-close')) {
+                return;
+            }
+            const modal = document.getElementById('fotoModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                fecharFotoModal();
+            }
+        });
+
+        // =============================================================
         // CONTEÚDO DA HOME (título do slider e texto extra)
         // =============================================================
         const homeContent = JSON.parse(localStorage.getItem("assga_conteudos") || "{}").index;
@@ -892,11 +1234,25 @@
         // CARREGAR LOGO DO localStorage
         // =============================================================
         function carregarLogo() {
-            const config = JSON.parse(localStorage.getItem('assga_config') || '{}');
+            let config = {};
+            try {
+                config = JSON.parse(localStorage.getItem('assga_config') || '{}');
+            } catch(e) {}
+
             const logoImg = document.querySelector('.logo-area img');
             const logoTxt = document.querySelector('.logo');
-            if (logoImg && config.logoImg && config.logoImg.startsWith('data:image')) {
-                logoImg.src = config.logoImg;
+
+            // Garantir que a logo padrão seja sempre a foto oficial Assga_foto.jpg
+            if (config.logoImg && config.logoImg !== 'src/imagens/Assga_foto.jpg') {
+                config.logoImg = 'src/imagens/Assga_foto.jpg';
+                config.faviconImg = 'src/imagens/Assga_foto.jpg';
+                try {
+                    localStorage.setItem('assga_config', JSON.stringify(config));
+                } catch(e) {}
+            }
+
+            if (logoImg) {
+                logoImg.src = 'src/imagens/Assga_foto.jpg';
             }
             if (logoTxt && config.logoTxt) {
                 logoTxt.textContent = config.logoTxt;

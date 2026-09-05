@@ -7,10 +7,10 @@ const allowedCollections = new Set([
   'diretoria',
   'estatuto',
   'historia',
-  'inscricoes',
-  'socios',
   'slider',
 ]);
+
+const privateCollections = new Set(['inscricoes', 'socios']);
 
 function hasDatabase() {
   return Boolean(process.env.POSTGRES_URL || process.env.POSTGRES_URL_NON_POOLING);
@@ -26,6 +26,12 @@ function collectionFromRequest(request) {
 
 export default async function handler(request, response) {
   const collection = collectionFromRequest(request);
+
+  if (privateCollections.has(collection)) {
+    return response.status(403).json({
+      error: 'Acesso restrito. Dados pessoais não são públicos.',
+    });
+  }
 
   if (!allowedCollections.has(collection)) {
     return response.status(400).json({ error: 'Coleção inválida.' });
@@ -63,7 +69,12 @@ export default async function handler(request, response) {
       const result = await client.sql`
         SELECT payload FROM assga_data WHERE collection = ${collection}
       `;
-      return response.status(200).json(result.rows[0]?.payload ?? []);
+      const payload = result.rows[0]?.payload ?? [];
+      if (collection === 'config' && payload && !Array.isArray(payload)) {
+        const { senha, ...publicConfig } = payload;
+        return response.status(200).json(publicConfig);
+      }
+      return response.status(200).json(payload);
     }
 
     if (request.method === 'POST') {

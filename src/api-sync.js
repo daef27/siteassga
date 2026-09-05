@@ -5,8 +5,6 @@ const collectionByStorageKey = {
   assga_diretoria: 'diretoria',
   assga_estatuto: 'estatuto',
   assga_historia: 'historia',
-  assga_inscricoes: 'inscricoes',
-  assga_socios: 'socios',
   assga_slider: 'slider',
 };
 

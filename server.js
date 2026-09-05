@@ -4,6 +4,7 @@ import https from 'https';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { GoogleGenAI } from '@google/genai';
+import { get as getGlobalConfig } from '@vercel/global-config';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -16,6 +17,25 @@ const PORT = Number(process.env.PORT || 3000);
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+app.get('/welcome', async (req, res) => {
+  if (!process.env.GLOBAL_CONFIG && !process.env.EDGE_CONFIG) {
+    return res.status(503).json({
+      error: 'Global Config não configurado.',
+      setup: 'Configure GLOBAL_CONFIG na Vercel.',
+    });
+  }
+
+  try {
+    const greeting = await getGlobalConfig('greeting');
+    return res.json(greeting ?? { greeting: 'Olá, ASSGA!' });
+  } catch (error) {
+    return res.status(500).json({
+      error: 'Não foi possível ler o Global Config.',
+      message: error.message,
+    });
+  }
+});
 
 // Lazy initialization for Gemini AI client (server-side)
 let aiClient = null;

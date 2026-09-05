@@ -897,30 +897,7 @@
             }
         ];
 
-        const SOCIOS_PADRAO = [
-            {
-                nome: "Deaf do Nascimento",
-                cpf: "000.000.000-01",
-                nascimento: "15/05/1995",
-                matricula: "001/2024",
-                categoria: "Sócio Efetivo",
-                telefone: "(84) 99698-1248",
-                senha: "123",
-                foto: "src/imagens/Assga_foto.jpg",
-                mesesPagos: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-            },
-            {
-                nome: "Carlos Eduardo Silva",
-                cpf: "111.222.333-44",
-                nascimento: "20/10/1992",
-                matricula: "002/2024",
-                categoria: "Sócio Atleta",
-                telefone: "(84) 98888-7777",
-                senha: "123",
-                foto: "src/imagens/avatar-padrao.jpg",
-                mesesPagos: [0, 1, 2, 3]
-            }
-        ];
+        const SOCIOS_PADRAO = [];
 
         function carregarTodosOsCadastros() {
             carregarSlider();
@@ -1051,8 +1028,16 @@
                 socios = JSON.parse(localStorage.getItem('assga_socios') || 'null');
             } catch(e) {}
 
-            if (!socios || !Array.isArray(socios) || socios.length === 0) {
-                socios = [...SOCIOS_PADRAO];
+            if (!Array.isArray(socios)) {
+                socios = [];
+            }
+
+            const sociosSemExemplos = socios.filter(socio => ![
+                '000.000.000-01',
+                '111.222.333-44'
+            ].includes(socio.cpf));
+            if (sociosSemExemplos.length !== socios.length) {
+                socios = sociosSemExemplos;
                 localStorage.setItem('assga_socios', JSON.stringify(socios));
             }
 
